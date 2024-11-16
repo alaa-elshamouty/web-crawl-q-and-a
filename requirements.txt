@@ -5,3 +5,8 @@ sentence-transformers
 faiss-cpu
 text-generation
 langchain-community
+langchain-chroma>=0.1.2
+beautifulsoup4
+requests
+tqdm
+ollama
