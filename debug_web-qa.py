@@ -3,7 +3,6 @@ import os
 import re
 import urllib.request
 from collections import deque
-from html.parser import HTMLParser
 from urllib.parse import urlparse
 
 import numpy as np
@@ -12,6 +11,8 @@ import requests
 import torch
 from bs4 import BeautifulSoup
 from transformers import AutoTokenizer, AutoModel, AutoModelForCausalLM
+
+from hyperlink_parser import HyperlinkParser
 
 # Use a pipeline as a high-level helper
 
@@ -39,19 +40,7 @@ full_url = "https://www.porsche.com/stories/experience/road-trip-in-a-porsche-94
 # "https://www.porsche.com/stories/"
 
 # Create a class to parse the HTML and get the hyperlinks
-class HyperlinkParser(HTMLParser):
-    def __init__(self):
-        super().__init__()
-        # Create a list to store the hyperlinks
-        self.hyperlinks = []
 
-    # Override the HTMLParser's handle_starttag method to get the hyperlinks
-    def handle_starttag(self, tag, attrs):
-        attrs = dict(attrs)
-
-        # If the tag is an anchor tag and it has an href attribute, add the href attribute to the list of hyperlinks
-        if tag == "a" and "href" in attrs:
-            self.hyperlinks.append(attrs["href"])
 
 
 # Function to get the hyperlinks from a URL
@@ -293,4 +282,5 @@ print('*Question:', question,
 # 1. extract correct section titles and fix saving their chunk in the json file
 # 2. check what kind of text preprocessing is needed
 # 3. try asking questions relevant to those chunks (very naive rag)
+#   - hf model takes forever to generate a response. Even with a simple prompt.
 # 4. create question answer context pipeline to train embedding model
